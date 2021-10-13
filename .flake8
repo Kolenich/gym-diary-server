@@ -1,0 +1,5 @@
+[flake8]
+exclude = .git, __pycache__, migrations, wsgi.py, asgi.py, venv, .idea, manage.py, settings.py,
+          urls.py, __init__.py, apps.py, admin.py
+max-line-length = 120
+ignore: A003, D106, D104, D105, F401, I100, I201
