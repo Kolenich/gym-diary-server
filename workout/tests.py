@@ -1,1 +1,1 @@
-"""Тесты приложения workout."""
+"""Workout app tests."""
