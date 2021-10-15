@@ -30,3 +30,19 @@ class WorkoutSerializer(serializers.ModelSerializer):
     class Meta:
         model = Workout
         fields = '__all__'
+
+    def create(self, validated_data):
+        exercises = validated_data.pop('exercises')
+
+        if validated_data.get('start') and not validated_data.get('end'):
+            raise serializers.ValidationError({'end': ['Необходимо указать конец тренировки.']})
+
+        if validated_data.get('end') and not validated_data.get('start'):
+            raise serializers.ValidationError({'start': ['Необходимо указать начало тренировки.']})
+
+        if not exercises:
+            raise serializers.ValidationError({'exercises': ['Необходимо задать упражнения.']})
+
+        instance = self.Meta.model.objects.create(**validated_data)
+
+        return instance
