@@ -33,20 +33,21 @@ class WorkoutSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def validate(self, attrs):
-        start = attrs.get('start')
-        end = attrs.get('end')
+        if not self.instance:
+            start = attrs.get('start')
+            end = attrs.get('end')
 
-        if start and not end:
-            raise serializers.ValidationError({'end': ['Необходимо указать конец тренировки.']})
+            if start and not end:
+                raise serializers.ValidationError({'end': ['Необходимо указать конец тренировки.']})
 
-        if end and not start:
-            raise serializers.ValidationError({'start': ['Необходимо указать начало тренировки.']})
+            if end and not start:
+                raise serializers.ValidationError({'start': ['Необходимо указать начало тренировки.']})
 
-        if start and end and start >= end:
-            raise serializers.ValidationError({
-                'start': ['Начало тренировки должно быть раньше конца.'],
-                'end': ['Конец тренировки должен быть позже начала.']
-            })
+            if start and end and start >= end:
+                raise serializers.ValidationError({
+                    'start': ['Начало тренировки должно быть раньше конца.'],
+                    'end': ['Конец тренировки должен быть позже начала.']
+                })
         return super().validate(attrs)
 
     @transaction.atomic
