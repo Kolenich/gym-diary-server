@@ -1,4 +1,5 @@
 """Models serialization."""
+from django.db import transaction
 from rest_framework import serializers
 
 from .models import Exercise, Set, Workout
@@ -31,18 +32,38 @@ class WorkoutSerializer(serializers.ModelSerializer):
         model = Workout
         fields = '__all__'
 
-    def create(self, validated_data):
-        exercises = validated_data.pop('exercises')
+    def validate(self, attrs):
+        start = attrs.get('start')
+        end = attrs.get('end')
 
-        if validated_data.get('start') and not validated_data.get('end'):
+        if start and not end:
             raise serializers.ValidationError({'end': ['Необходимо указать конец тренировки.']})
 
-        if validated_data.get('end') and not validated_data.get('start'):
+        if end and not start:
             raise serializers.ValidationError({'start': ['Необходимо указать начало тренировки.']})
+
+        if start and end and start >= end:
+            raise serializers.ValidationError({
+                'start': ['Начало тренировки должно быть раньше конца.'],
+                'end': ['Конец тренировки должен быть позже начала.']
+            })
+        return super().validate(attrs)
+
+    @transaction.atomic
+    def create(self, validated_data):
+        exercises = validated_data.pop('exercises')
 
         if not exercises:
             raise serializers.ValidationError({'exercises': ['Необходимо задать упражнения.']})
 
         instance = self.Meta.model.objects.create(**validated_data)
+
+        exercises_serializer = ExerciseSerializer(
+            data=list(map(lambda x: {**x, 'workout': instance}, exercises)),
+            many=True
+        )
+
+        if exercises_serializer.is_valid(raise_exception=True):
+            exercises_serializer.save()
 
         return instance
