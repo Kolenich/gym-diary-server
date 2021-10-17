@@ -145,3 +145,11 @@ class WorkoutSerializer(serializers.ModelSerializer):
         instance.save(update_fields=validated_data.keys())
 
         return instance
+
+
+class WorkoutListSerializer(serializers.ModelSerializer):
+    """Simple list serializer for workout."""
+
+    class Meta:
+        model = Workout
+        fields = '__all__'

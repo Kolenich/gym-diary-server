@@ -4,14 +4,18 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 
 from .models import Workout
-from .serializers import ExerciseSerializer, SetSerializer, WorkoutSerializer
+from .serializers import ExerciseSerializer, SetSerializer, WorkoutListSerializer, WorkoutSerializer
 
 
 class WorkoutViewset(viewsets.ModelViewSet):
     """Base workout model viewset."""
 
     queryset = Workout.objects.all()
-    serializer_class = WorkoutSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return WorkoutListSerializer
+        return WorkoutSerializer
 
     @transaction.atomic
     def update(self, request, *args, **kwargs):
