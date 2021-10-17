@@ -7,6 +7,7 @@ from .models import Exercise, Set, Workout
 
 class SetSerializer(serializers.ModelSerializer):
     """Base set serializer."""
+
     exercise_id = serializers.IntegerField(required=False, write_only=True)
 
     class Meta:
@@ -16,6 +17,7 @@ class SetSerializer(serializers.ModelSerializer):
 
 class ExerciseSerializer(serializers.ModelSerializer):
     """Base exercise model serializer."""
+
     workout_id = serializers.IntegerField(required=False, write_only=True)
 
     sets = SetSerializer(many=True, required=False)
@@ -24,11 +26,14 @@ class ExerciseSerializer(serializers.ModelSerializer):
         model = Exercise
         exclude = ['workout']
 
-    def validate(self, attrs):
-        return attrs
-
     @transaction.atomic
     def create(self, validated_data):
+        """
+        Override of create method so it can handle nested creations.
+
+        :param validated_data: validated data
+        :return: created instance
+        """
         sets = validated_data.pop('sets')
 
         instance = self.Meta.model.objects.create(**validated_data)
@@ -44,6 +49,13 @@ class ExerciseSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
+        """
+        Override of update method so it can handle nested creations.
+
+        :param instance: instance to be updated
+        :param validated_data: validated data
+        :return: updated instance
+        """
         sets = validated_data.pop('sets')
 
         sets_data = list(map(lambda x: {**x, 'exercise_id': instance.pk}, sets))
@@ -71,6 +83,12 @@ class WorkoutSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def validate(self, attrs):
+        """
+        Override of validate method to add additional validations.
+
+        :param attrs: data to be validated
+        :return: validated data
+        """
         start = attrs.get('start')
         end = attrs.get('end')
 
@@ -84,6 +102,12 @@ class WorkoutSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def create(self, validated_data):
+        """
+        Override of create method so it can handle nested creations.
+
+        :param validated_data: validated data
+        :return: created instance
+        """
         exercises = validated_data.pop('exercises')
 
         instance = self.Meta.model.objects.create(**validated_data)
@@ -99,6 +123,13 @@ class WorkoutSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
+        """
+        Override of update method so it can handle nested creations.
+
+        :param instance: instance to be updated
+        :param validated_data: validated data
+        :return: updated instance
+        """
         exercises = validated_data.pop('exercises')
 
         exercises_data = list(map(lambda x: {**x, 'workout_id': instance.pk}, exercises))

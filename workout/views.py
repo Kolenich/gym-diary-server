@@ -15,6 +15,7 @@ class WorkoutViewset(viewsets.ModelViewSet):
 
     @transaction.atomic
     def update(self, request, *args, **kwargs):
+        """Override of update action to handle complex update/create/delete actions for nested objects."""
         exercises_data = request.data.pop('exercises')
 
         new_exercises = list(filter(lambda x: isinstance(x.get('id'), str), exercises_data))
