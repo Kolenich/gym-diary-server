@@ -97,6 +97,16 @@ class WorkoutSerializer(serializers.ModelSerializer):
                 'start': ['Начало тренировки должно быть раньше конца.'],
                 'end': ['Конец тренировки должен быть позже начала.']
             })
+        # Validating duration being not longer that 2 hours
+        end_minutes = end.hour * 60 + end.minute
+        start_minutes = start.hour * 60 + start.minute
+        hours = (end_minutes - start_minutes) / 60
+
+        if hours > 2:
+            raise serializers.ValidationError({
+                'start': ['Тренировка не должна превышать 2 часа.'],
+                'end': ['Тренировка не должна превышать 2 часа.']
+            })
 
         return super().validate(attrs)
 

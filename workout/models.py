@@ -12,6 +12,12 @@ class Workout(models.Model):
     class Meta:
         db_table = 'workouts'
 
+    @property
+    def duration(self):
+        end_minutes = self.end.hour * 60 + self.end.minute
+        start_minutes = self.start.hour * 60 + self.start.minute
+        return (end_minutes - start_minutes) / 60
+
 
 class Exercise(models.Model):
     """Base exercise model."""
