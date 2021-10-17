@@ -17,18 +17,19 @@ class SetSerializer(serializers.ModelSerializer):
 class ExerciseSerializer(serializers.ModelSerializer):
     """Base exercise model serializer."""
     workout_id = serializers.IntegerField(required=False, write_only=True)
-    sets = SetSerializer(many=True)
+
+    sets = SetSerializer(many=True, required=False)
 
     class Meta:
         model = Exercise
         exclude = ['workout']
 
+    def validate(self, attrs):
+        return attrs
+
     @transaction.atomic
     def create(self, validated_data):
         sets = validated_data.pop('sets')
-
-        if not sets:
-            raise serializers.ValidationError({'sets': ['Необходимо указать подходы.']})
 
         instance = self.Meta.model.objects.create(**validated_data)
 
@@ -41,11 +42,29 @@ class ExerciseSerializer(serializers.ModelSerializer):
 
         return instance
 
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        sets = validated_data.pop('sets')
+
+        sets_data = list(map(lambda x: {**x, 'exercise_id': instance.pk}, sets))
+
+        sets_serializer = SetSerializer(data=sets_data, many=True)
+
+        if sets_serializer.is_valid(raise_exception=True):
+            sets_serializer.save()
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        instance.save(update_fields=validated_data.keys())
+
+        return instance
+
 
 class WorkoutSerializer(serializers.ModelSerializer):
     """Base workout model serializer."""
 
-    exercises = ExerciseSerializer(many=True)
+    exercises = ExerciseSerializer(many=True, required=False)
 
     class Meta:
         model = Workout
@@ -60,14 +79,12 @@ class WorkoutSerializer(serializers.ModelSerializer):
                 'start': ['Начало тренировки должно быть раньше конца.'],
                 'end': ['Конец тренировки должен быть позже начала.']
             })
+
         return super().validate(attrs)
 
     @transaction.atomic
     def create(self, validated_data):
         exercises = validated_data.pop('exercises')
-
-        if not exercises:
-            raise serializers.ValidationError({'exercises': ['Необходимо задать упражнения.']})
 
         instance = self.Meta.model.objects.create(**validated_data)
 
@@ -77,5 +94,23 @@ class WorkoutSerializer(serializers.ModelSerializer):
 
         if exercises_serializer.is_valid(raise_exception=True):
             exercises_serializer.save()
+
+        return instance
+
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        exercises = validated_data.pop('exercises')
+
+        exercises_data = list(map(lambda x: {**x, 'workout_id': instance.pk}, exercises))
+
+        exercises_serializer = ExerciseSerializer(data=exercises_data, many=True)
+
+        if exercises_serializer.is_valid(raise_exception=True):
+            exercises_serializer.save()
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        instance.save(update_fields=validated_data.keys())
 
         return instance
