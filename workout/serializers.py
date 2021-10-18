@@ -34,16 +34,16 @@ class ExerciseSerializer(serializers.ModelSerializer):
         :param validated_data: validated data
         :return: created instance
         """
-        sets = validated_data.pop('sets')
+        sets = validated_data.pop('sets', [])
 
         instance = self.Meta.model.objects.create(**validated_data)
 
-        sets_data = list(map(lambda x: {**x, 'exercise_id': instance.pk}, sets))
+        if sets:
+            sets_data = list(map(lambda x: {**x, 'exercise_id': instance.pk}, sets))
+            sets_serializer = SetSerializer(data=sets_data, many=True)
 
-        sets_serializer = SetSerializer(data=sets_data, many=True)
-
-        if sets_serializer.is_valid(raise_exception=True):
-            sets_serializer.save()
+            if sets_serializer.is_valid(raise_exception=True):
+                sets_serializer.save()
 
         return instance
 
@@ -56,19 +56,19 @@ class ExerciseSerializer(serializers.ModelSerializer):
         :param validated_data: validated data
         :return: updated instance
         """
-        sets = validated_data.pop('sets')
-
-        sets_data = list(map(lambda x: {**x, 'exercise_id': instance.pk}, sets))
-
-        sets_serializer = SetSerializer(data=sets_data, many=True)
-
-        if sets_serializer.is_valid(raise_exception=True):
-            sets_serializer.save()
+        sets = validated_data.pop('sets', [])
 
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
 
         instance.save(update_fields=validated_data.keys())
+
+        if sets:
+            sets_data = list(map(lambda x: {**x, 'exercise_id': instance.pk}, sets))
+            sets_serializer = SetSerializer(data=sets_data, many=True)
+
+            if sets_serializer.is_valid(raise_exception=True):
+                sets_serializer.save()
 
         return instance
 
@@ -118,16 +118,16 @@ class WorkoutSerializer(serializers.ModelSerializer):
         :param validated_data: validated data
         :return: created instance
         """
-        exercises = validated_data.pop('exercises')
+        exercises = validated_data.pop('exercises', [])
 
         instance = self.Meta.model.objects.create(**validated_data)
 
-        exercises_data = list(map(lambda x: {**x, 'workout_id': instance.pk}, exercises))
+        if exercises:
+            exercises_data = list(map(lambda x: {**x, 'workout_id': instance.pk}, exercises))
+            exercises_serializer = ExerciseSerializer(data=exercises_data, many=True)
 
-        exercises_serializer = ExerciseSerializer(data=exercises_data, many=True)
-
-        if exercises_serializer.is_valid(raise_exception=True):
-            exercises_serializer.save()
+            if exercises_serializer.is_valid(raise_exception=True):
+                exercises_serializer.save()
 
         return instance
 
@@ -140,19 +140,19 @@ class WorkoutSerializer(serializers.ModelSerializer):
         :param validated_data: validated data
         :return: updated instance
         """
-        exercises = validated_data.pop('exercises')
-
-        exercises_data = list(map(lambda x: {**x, 'workout_id': instance.pk}, exercises))
-
-        exercises_serializer = ExerciseSerializer(data=exercises_data, many=True)
-
-        if exercises_serializer.is_valid(raise_exception=True):
-            exercises_serializer.save()
+        exercises = validated_data.pop('exercises', [])
 
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
 
         instance.save(update_fields=validated_data.keys())
+
+        if exercises:
+            exercises_data = list(map(lambda x: {**x, 'workout_id': instance.pk}, exercises))
+            exercises_serializer = ExerciseSerializer(data=exercises_data, many=True)
+
+            if exercises_serializer.is_valid(raise_exception=True):
+                exercises_serializer.save()
 
         return instance
 
