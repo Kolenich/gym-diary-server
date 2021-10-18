@@ -1,9 +1,9 @@
-"""Models for workout app."""
+"""Models for workouts app."""
 from django.db import models
 
 
 class Workout(models.Model):
-    """Base workout model."""
+    """Base workouts model."""
 
     date = models.DateField()
     start = models.TimeField()

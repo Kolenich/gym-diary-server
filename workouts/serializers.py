@@ -24,7 +24,7 @@ class ExerciseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Exercise
-        exclude = ['workout']
+        exclude = ['workouts']
 
     @transaction.atomic
     def create(self, validated_data):
@@ -74,7 +74,7 @@ class ExerciseSerializer(serializers.ModelSerializer):
 
 
 class WorkoutSerializer(serializers.ModelSerializer):
-    """Base workout model serializer."""
+    """Base workouts model serializer."""
 
     exercises = ExerciseSerializer(many=True, required=False)
 
@@ -158,7 +158,7 @@ class WorkoutSerializer(serializers.ModelSerializer):
 
 
 class WorkoutListSerializer(serializers.ModelSerializer):
-    """Simple list serializer for workout."""
+    """Simple list serializer for workouts."""
 
     class Meta:
         model = Workout

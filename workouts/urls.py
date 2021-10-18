@@ -1,4 +1,4 @@
-"""URL-patterns for workout app."""
+"""URL-patterns for workouts app."""
 from rest_framework import routers
 
 from .views import WorkoutViewset

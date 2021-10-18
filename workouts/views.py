@@ -8,7 +8,7 @@ from .serializers import ExerciseSerializer, SetSerializer, WorkoutListSerialize
 
 
 class WorkoutViewset(viewsets.ModelViewSet):
-    """Base workout model viewset."""
+    """Base workouts model viewset."""
 
     queryset = Workout.objects.all()
 

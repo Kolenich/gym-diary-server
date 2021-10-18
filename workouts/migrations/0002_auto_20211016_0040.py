@@ -6,17 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('workout', '0001_initial'),
+        ('workouts', '0001_initial'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='workout',
+            model_name='workouts',
             name='end',
             field=models.TimeField(),
         ),
         migrations.AlterField(
-            model_name='workout',
+            model_name='workouts',
             name='start',
             field=models.TimeField(),
         ),

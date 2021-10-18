@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('workout', '0002_auto_20211016_0040'),
+        ('workouts', '0002_auto_20211016_0040'),
     ]
 
     operations = [
@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
             table='sets',
         ),
         migrations.AlterModelTable(
-            name='workout',
+            name='workouts',
             table='workouts',
         ),
     ]
