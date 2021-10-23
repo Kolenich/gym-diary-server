@@ -1,4 +1,4 @@
-FROM python:3.9-slim
+FROM python:3-slim
 
 WORKDIR /app
 
@@ -12,4 +12,7 @@ RUN pip install -r requirements.txt
 
 COPY . /app
 
-ENTRYPOINT gunicorn server.wsgi -b 0.0.0.0 --log-file - --access-logfile -
+ENTRYPOINT mkdir -p logs \
+        && python manage.py migrate \
+        && python manage.py collectstatic --no-input \
+        && gunicorn server.wsgi -b 0.0.0.0 --log-file logs/gunicorn.log --access-logfile logs/gunicorn.log
