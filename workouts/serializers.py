@@ -39,7 +39,7 @@ class ExerciseSerializer(serializers.ModelSerializer):
         instance = self.Meta.model.objects.create(**validated_data)
 
         if sets:
-            sets_data = list(map(lambda x: {**x, 'exercise_id': instance.pk}, sets))
+            sets_data = [{**x, 'exercise_id': instance.pk} for x in sets]
             sets_serializer = SetSerializer(data=sets_data, many=True)
 
             if sets_serializer.is_valid(raise_exception=True):
@@ -64,7 +64,7 @@ class ExerciseSerializer(serializers.ModelSerializer):
         instance.save(update_fields=validated_data.keys())
 
         if sets:
-            sets_data = list(map(lambda x: {**x, 'exercise_id': instance.pk}, sets))
+            sets_data = [{**x, 'exercise_id': instance.pk} for x in sets]
             sets_serializer = SetSerializer(data=sets_data, many=True)
 
             if sets_serializer.is_valid(raise_exception=True):
@@ -123,7 +123,7 @@ class WorkoutSerializer(serializers.ModelSerializer):
         instance = self.Meta.model.objects.create(**validated_data)
 
         if exercises:
-            exercises_data = list(map(lambda x: {**x, 'workout_id': instance.pk}, exercises))
+            exercises_data = [{**x, 'workout_id': instance.pk} for x in exercises]
             exercises_serializer = ExerciseSerializer(data=exercises_data, many=True)
 
             if exercises_serializer.is_valid(raise_exception=True):
@@ -148,7 +148,7 @@ class WorkoutSerializer(serializers.ModelSerializer):
         instance.save(update_fields=validated_data.keys())
 
         if exercises:
-            exercises_data = list(map(lambda x: {**x, 'workout_id': instance.pk}, exercises))
+            exercises_data = [{**x, 'workout_id': instance.pk} for x in exercises]
             exercises_serializer = ExerciseSerializer(data=exercises_data, many=True)
 
             if exercises_serializer.is_valid(raise_exception=True):
