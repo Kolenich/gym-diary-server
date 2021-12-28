@@ -29,7 +29,7 @@ class ExerciseSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def create(self, validated_data):
         """
-        Override of create method so it can handle nested creations.
+        Override of create method, so it can handle nested creations.
 
         :param validated_data: validated data
         :return: created instance
