@@ -97,7 +97,7 @@ class WorkoutSerializer(serializers.ModelSerializer):
                 'start': ['Начало тренировки должно быть раньше конца.'],
                 'end': ['Конец тренировки должен быть позже начала.']
             })
-        # Validating duration being not longer that 2 hours
+        # Validating duration being not longer than 2 hours
         end_minutes = end.hour * 60 + end.minute
         start_minutes = start.hour * 60 + start.minute
         hours = (end_minutes - start_minutes) / 60
@@ -113,7 +113,7 @@ class WorkoutSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def create(self, validated_data):
         """
-        Override of create method so it can handle nested creations.
+        Override of create method, so it can handle nested creations.
 
         :param validated_data: validated data
         :return: created instance

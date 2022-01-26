@@ -30,7 +30,7 @@ class WorkoutViewset(viewsets.ModelViewSet):
 
         # Deleting exercises
         for exercise in workout_instance.exercises.all():
-            # If exercise from DB is not presented in request data, than it was deleted
+            # If exercise from DB is not presented in request data, then it was deleted
             if not next((x for x in existing_exercises if x.get('id') == exercise.pk), None):
                 # So we delete it
                 exercise.delete()
