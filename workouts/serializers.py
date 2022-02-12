@@ -1,5 +1,4 @@
 """Models serialization."""
-from django.db import transaction
 from rest_framework import serializers
 
 from .models import Exercise, Set, Workout
@@ -26,7 +25,6 @@ class ExerciseSerializer(serializers.ModelSerializer):
         model = Exercise
         exclude = ['workout']
 
-    @transaction.atomic
     def create(self, validated_data):
         """
         Override of create method, so it can handle nested creations.
@@ -47,7 +45,6 @@ class ExerciseSerializer(serializers.ModelSerializer):
 
         return instance
 
-    @transaction.atomic
     def update(self, instance, validated_data):
         """
         Override of update method so it can handle nested creations.
@@ -110,7 +107,6 @@ class WorkoutSerializer(serializers.ModelSerializer):
 
         return super().validate(attrs)
 
-    @transaction.atomic
     def create(self, validated_data):
         """
         Override of create method, so it can handle nested creations.
@@ -131,7 +127,6 @@ class WorkoutSerializer(serializers.ModelSerializer):
 
         return instance
 
-    @transaction.atomic
     def update(self, instance, validated_data):
         """
         Override of update method so it can handle nested creations.

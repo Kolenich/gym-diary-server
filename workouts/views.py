@@ -1,5 +1,4 @@
 """Workout app views."""
-from django.db import transaction
 from rest_framework import viewsets
 from rest_framework.response import Response
 
@@ -17,7 +16,6 @@ class WorkoutViewset(viewsets.ModelViewSet):
             return WorkoutListSerializer
         return WorkoutSerializer
 
-    @transaction.atomic
     def update(self, request, *args, **kwargs):
         """Override of update action to handle complex update/create/delete actions for nested objects."""
         exercises_data = request.data.pop('exercises')
