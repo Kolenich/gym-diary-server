@@ -10,6 +10,9 @@ class WorkoutViewset(viewsets.ModelViewSet):
     """Base workouts model viewset."""
 
     queryset = Workout.objects.all()
+    filterset_fields = {
+        'date': ('gte', 'lte')
+    }
 
     def get_serializer_class(self):
         if self.action == 'list':

@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django_filters',
     'corsheaders',
     'workouts'
 ]
@@ -121,8 +122,11 @@ STATIC_ROOT = BASE_DIR / 'static'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Django Rest Framework settings
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = DEBUG
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': None,
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
 }
