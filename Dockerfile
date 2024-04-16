@@ -1,4 +1,4 @@
-FROM python:3-slim
+FROM python:slim
 WORKDIR /app
 EXPOSE 8000
 RUN pip install -U pip -U setuptools gunicorn psycopg2-binary

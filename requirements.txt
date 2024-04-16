@@ -3,5 +3,6 @@ Django
 django-cors-headers
 django-filter
 djangorestframework
+drf_yasg
 flake8
 flake8-docstrings
