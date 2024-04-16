@@ -23,7 +23,7 @@ schema_view = get_schema_view(
     openapi.Info(
         title='Workouts API',
         default_version='v1',
-        description='API for Workouts diary',
+        description='API for Workouts schedule',
         contact=openapi.Contact(email='nick.zhigalin@gmail.com'),
         license=openapi.License(name='MIT License'),
     ),

@@ -1,17 +1,10 @@
 FROM python:3-slim
-
 WORKDIR /app
-
 EXPOSE 8000
-
 RUN pip install -U pip -U setuptools gunicorn psycopg2-binary
-
-COPY ./requirements.txt /app/
-
+COPY requirements.txt .
 RUN pip install -r requirements.txt
-
-COPY . /app
-
+COPY . .
 ENTRYPOINT mkdir -p logs \
         && python manage.py migrate \
         && python manage.py collectstatic --no-input \
