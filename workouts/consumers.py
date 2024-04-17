@@ -13,3 +13,6 @@ class WorkoutConsumer(AsyncWebsocketConsumer):
     async def disconnect(self, close_code):
         # Leave group
         await self.channel_layer.group_discard(self.group, self.channel_name)
+
+    async def workout_inform(self, event):
+        await self.send(text_data=event['message'])

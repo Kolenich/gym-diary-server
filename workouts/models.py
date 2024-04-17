@@ -1,5 +1,11 @@
 """Models for workouts app."""
+import json
+
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 from django.db import models
+
+from workouts.consumers import WorkoutConsumer
 
 
 class Workout(models.Model):
@@ -11,6 +17,14 @@ class Workout(models.Model):
 
     class Meta:
         db_table = 'workouts'
+
+    def to_websocket(self, action):
+        channel_layer = get_channel_layer()
+
+        async_to_sync(channel_layer.group_send)(WorkoutConsumer.group, {
+            'type': 'workout.inform',
+            'message': json.dumps({'action': action, 'arg': self.id}),
+        })
 
 
 class Exercise(models.Model):

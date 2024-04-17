@@ -125,6 +125,8 @@ class WorkoutSerializer(serializers.ModelSerializer):
             if exercises_serializer.is_valid(raise_exception=True):
                 exercises_serializer.save()
 
+        instance.to_websocket('refetch_list')
+
         return instance
 
     def update(self, instance, validated_data):
@@ -148,6 +150,8 @@ class WorkoutSerializer(serializers.ModelSerializer):
 
             if exercises_serializer.is_valid(raise_exception=True):
                 exercises_serializer.save()
+
+        instance.to_websocket('refetch_workout')
 
         return instance
 
