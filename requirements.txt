@@ -1,4 +1,5 @@
 asgiref
+channels[daphne]
 Django
 django-cors-headers
 django-filter
