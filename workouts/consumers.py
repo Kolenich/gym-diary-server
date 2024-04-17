@@ -1,10 +1,18 @@
 import json
 
-from channels.generic.websocket import WebsocketConsumer
+from asgiref.sync import async_to_sync
+from channels.generic.websocket import AsyncWebsocketConsumer
 
 
-class WorkoutConsumer(WebsocketConsumer):
-    def receive(self, text_data=None, bytes_data=None):
-        text_data_json = json.loads(text_data)
+class WorkoutConsumer(AsyncWebsocketConsumer):
+    group = 'workouts'
 
-        self.send(text_data=json.dumps(text_data_json))
+    async def connect(self):
+        # Join group
+        await self.channel_layer.group_add(self.group, self.channel_name)
+
+        await self.accept()
+
+    async def disconnect(self, close_code):
+        # Leave group
+        await self.channel_layer.group_discard(self.group, self.channel_name)
