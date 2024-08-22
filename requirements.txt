@@ -7,3 +7,4 @@ djangorestframework
 drf_yasg
 flake8
 flake8-docstrings
+tzlocal
