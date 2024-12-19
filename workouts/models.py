@@ -11,9 +11,8 @@ from workouts.consumers import WorkoutConsumer
 class Workout(models.Model):
     """Base workouts model."""
 
-    date = models.DateField()
-    start = models.TimeField()
-    end = models.TimeField()
+    start = models.DateTimeField()
+    end = models.DateTimeField()
 
     class Meta:
         db_table = 'workouts'
