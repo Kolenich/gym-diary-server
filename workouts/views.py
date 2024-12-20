@@ -8,11 +8,11 @@ from .serializers import ExerciseSerializer, SetSerializer, WorkoutSerializer
 class WorkoutViewset(viewsets.ModelViewSet):
     """Workouts model viewset."""
 
-    queryset = Workout.objects.all()
+    queryset = Workout.objects.order_by('date')
     serializer_class = WorkoutSerializer
     filterset_fields = {
-        'start': ('gte', 'lte'),
-        'end': ('gte', 'lte')
+        'date': ('exact',),
+        'focus_area': ('icontains',)
     }
 
 
