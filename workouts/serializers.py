@@ -27,6 +27,8 @@ class ExerciseSerializer(serializers.ModelSerializer):
 class WorkoutSerializer(serializers.ModelSerializer):
     """Simple serializer for workouts."""
 
+    start_time = serializers.TimeField(format='%H:%M')
+
     class Meta:
         model = Workout
         fields = '__all__'
