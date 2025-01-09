@@ -14,7 +14,7 @@ class WorkoutViewset(viewsets.ModelViewSet):
         'date': ('exact',),
         'focus_area': ('icontains',)
     }
-    ordering_fields = ('date', 'start_time')
+    ordering_fields = ('date', 'start_time', 'duration_hours')
 
 
 class ExerciseViewset(viewsets.ModelViewSet):
