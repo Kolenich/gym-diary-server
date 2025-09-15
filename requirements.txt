@@ -4,7 +4,7 @@ Django
 django-cors-headers
 django-filter
 djangorestframework
-drf_yasg
+drf-spectacular
 flake8
 flake8-docstrings
 tzlocal
