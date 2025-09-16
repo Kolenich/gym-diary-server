@@ -5,3 +5,4 @@ Dockerfile
 bump-version.sh
 bump_version.py
 docker-push.sh
+README.md
