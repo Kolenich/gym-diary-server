@@ -27,5 +27,6 @@ def bump_version():
         config.write(configfile)
 
 
+print(__name__)
 if __name__ == '__main__':
     bump_version()
