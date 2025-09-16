@@ -5,3 +5,4 @@ repos:
         name: Push image to docker hub
         entry: ./docker-push.sh
         language: system
+        stages: [pre-push]
