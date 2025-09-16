@@ -3,10 +3,13 @@ repos:
     hooks:
       - id: docker-push
         name: Push image to docker hub
-        entry: ./git-hooks/docker-push.sh
+        entry: ./docker-push.sh
         language: system
         stages: [ pre-push ]
       - id: bump version patch
         name: Bumps version patch section
-        entry: ./git-hooks/bump-version.sh
+        entry: ./bump-version.sh
         language: system
+        pass_filenames: false
+        always_run: true
+        stages: [ pre-commit ]

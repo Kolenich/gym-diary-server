@@ -12,11 +12,16 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 import os
 from pathlib import Path
+from configparser import ConfigParser
 
 import tzlocal
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+CONFIG = ConfigParser()
+
+CONFIG.read('settings.ini')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -152,7 +157,7 @@ SPECTACULAR_SETTINGS = {
     'REDOC_DIST': 'SIDECAR',
     'TITLE': 'Workouts API',
     'DESCRIPTION': 'Workouts API for gym diary',
-    'VERSION': '0.1.0',
+    'VERSION': CONFIG['SETTINGS']['version'],
 }
 
 CHANNEL_LAYERS = {

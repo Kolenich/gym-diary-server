@@ -21,12 +21,10 @@ def bump_version():
     version = f'{major}.{minor}.{patch}'
 
     config['SETTINGS']['version'] = version
-    print(config['SETTINGS']['version'])
 
-    with open('../settings.ini', 'w') as configfile:
+    with open('settings.ini', 'w') as configfile:
         config.write(configfile)
 
 
-print(__name__)
 if __name__ == '__main__':
     bump_version()
