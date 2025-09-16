@@ -10,4 +10,3 @@ repos:
         name: Bumps version patch section
         entry: ./git-hooks/bump-version.sh
         language: system
-        stages: [ commit ]
