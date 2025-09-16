@@ -3,6 +3,11 @@ repos:
     hooks:
       - id: docker-push
         name: Push image to docker hub
-        entry: ./docker-push.sh
+        entry: ./git-hooks/docker-push.sh
         language: system
-        stages: [push]
+        stages: [ push ]
+      - id: bump version patch
+        name: Bumps version patch section
+        entry: ./git-hooks/bump-version.sh
+        language: system
+        stages: [ commit ]
