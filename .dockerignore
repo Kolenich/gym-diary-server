@@ -2,3 +2,6 @@
 db.sqlite3
 venv
 Dockerfile
+bump-version.sh
+bump_version.py
+docker-push.sh
