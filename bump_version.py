@@ -1,8 +1,11 @@
+"""Script for bumping version. Run automatically with patch arg on commit."""
+
 import sys
 from configparser import ConfigParser
 
 
 def bump_version():
+    """Bumps version based on arg - major, minor, patch."""
     config = ConfigParser()
     config.read('settings.ini')
 
