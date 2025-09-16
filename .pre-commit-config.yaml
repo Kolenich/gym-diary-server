@@ -1,0 +1,7 @@
+repos:
+  - repo: local
+    hooks:
+      - id: docker-push
+        name: Push image to docker hub
+        entry: ./docker-push.sh
+        language: system

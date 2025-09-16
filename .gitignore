@@ -3,3 +3,4 @@ venv
 db.sqlite3
 !.dockerignore
 !.flake8
+!.pre-commit-config.yaml
