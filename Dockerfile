@@ -1,4 +1,4 @@
-FROM python:slim
+FROM python:alpine
 WORKDIR /app
 EXPOSE 8000
 RUN pip install -U pip -U setuptools psycopg2-binary channels-redis
